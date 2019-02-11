@@ -1,12 +1,4 @@
 
-document_vector <- function(doc, wtv){
-
-}
-
-scdv <- function(){
-
-}
-
 word2vec <- function(doc, output_file = NULL){
   document_file <- tempfile()
   if(is.null(output_file)){
@@ -36,7 +28,22 @@ word_topics <- function(doc, w2v_args = list(use_), gmm_args){
   wv <- word2vec(doc, output_file = NULL)
   prob <- gmm(wv, k)
   wcv <- purrr::map(seq_len(k), ~ prob[,.x]*wv)
-  # Calculate Inverse-Document-Frequency
   idf <- calc_idf(dimnames(wv)[[1]], doc)
   idf * purrr::reduce(wcv, ~ cbind(.x, .y))
+}
+
+make_sparse <- function(dv){
+  t <- mean(abs(range(dv)))
+  ifelse(abs(dv) > p/100 * t, dv, 0)
+}
+
+scdv <- function(doc, wtv){
+  wv <- word2vec(doc)
+  prob <- gmm(wv, k)
+  wcv <- purrr::map(seq_len(k), ~ prob[,.x]*wv)
+  word <- rownames(wv)
+  idf <- calc_idf(word, doc)
+  wtv <- idf * purrr::reduce(wcv, ~ cbind(.x, .y))
+  dv <- purrr::map(doc, ~ colSums(wtv[.x[.x %in% word], ]))
+  purrr::map(dv, ~ make_sparse(.x))
 }
