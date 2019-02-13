@@ -32,9 +32,9 @@ word_topics <- function(doc, w2v_args = list(use_), gmm_args){
   idf * purrr::reduce(wcv, ~ cbind(.x, .y))
 }
 
-make_sparse <- function(dv){
+make_sparse <- function(dv, p){
   t <- mean(abs(range(dv)))
-  ifelse(abs(dv) > p/100 * t, dv, 0)
+  ifelse(abs(dv) > p * t, dv, 0)
 }
 
 scdv <- function(doc, wtv){
