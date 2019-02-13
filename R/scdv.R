@@ -37,7 +37,9 @@ make_sparse <- function(dv, p){
   ifelse(abs(dv) > p * t, dv, 0)
 }
 
-scdv <- function(doc, wtv){
+#' @export
+#' @param doc list of document. each document
+scdv <- function(doc){
   wv <- word2vec(doc)
   prob <- gmm(wv, k)
   wcv <- purrr::map(seq_len(k), ~ prob[,.x]*wv)

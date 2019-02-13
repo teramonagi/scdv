@@ -1,2 +1,4 @@
 # scdv
-SCDV (Sparse Composite Document Vectors) implementation in R
+An R package for SCDV (Sparse Composite Document Vectors) algorithm
+
+#
