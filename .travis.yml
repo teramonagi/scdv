@@ -1,1 +1,10 @@
-language: r
+language: R
+sudo: true
+cache: packages
+
+matrix:
+  fast_finish: true
+  include:
+    - r: release
+      r_github_packages:
+      - bmschmidt/wordVectors
