@@ -1,11 +1,12 @@
 get_default <- function(func){
-  purrr::keep(x, purrr::map_lgl(as.list(formals(func)), ~ !is.name(.x)))
+  x <- as.list(formals(func))
+  purrr::keep(x, purrr::map_lgl(x, ~ !is.name(.x)))
 }
 
 overwrite_default <- function(func, args){
   default_args <- get_default(func)
   result <- purrr::map(names(default_args), ~ if(is.element(.x, args)){args[[.x]]}else{default_args[[.x]]})
-  setNames(result, names(default_args))
+  stats::setNames(result, names(default_args))
 }
 
 #' @export
