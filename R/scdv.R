@@ -9,7 +9,6 @@ overwrite_default <- function(func, args){
   stats::setNames(result, names(default_args))
 }
 
-#' @export
 word2vec <- function(doc, dimension, args = list())
 {
   output_file <- tempfile(fileext = ".bin")
@@ -21,16 +20,14 @@ word2vec <- function(doc, dimension, args = list())
   as.matrix(model@.Data)
 }
 
-#' @export
-gmm <- function(word_vector, k, args = list())
+gmm <- function(wv, k, args = list())
 {
-  x <- ClusterR::center_scale(word_vector, mean_center = T, sd_scale = T)
+  x <- ClusterR::center_scale(wv, mean_center = T, sd_scale = T)
   gmm <-  ClusterR::GMM(x, k, dist_mode = "maha_dist", seed_mode = "random_subset", km_iter = 10, em_iter = 10)
   # predict centroids, covariance matrix and weights
   ClusterR::predict_GMM(x, gmm$centroids, gmm$covariance_matrices, gmm$weights)$cluster_proba
 }
 
-#' @export
 calc_idf <- function(doc, word)
 {
   D <- length(doc)
@@ -38,7 +35,6 @@ calc_idf <- function(doc, word)
   1 + log(D / denominator)
 }
 
-#' @export
 word_topic_vector <- function(doc, k, dimension, word2vec_args = list(), gmm_args = list())
 {
   wv <- word2vec(doc, dimension, word2vec_args)
@@ -65,15 +61,39 @@ document_vector <- function(doc, word, wtv)
 #'
 #' Calculate Sparse Composite Document Vector (SCDV)
 #'
-#' @export
-#' @param doc List of document. each document
-#' @param k The number of clusters
-#' @param dimension The dimensions of word vector representations for every word
-#' @param p The sparsity threshold for SCDV
+#' @inheritParams doc
+#' @inheritParams k
+#' @inheritParams dimension
+#' @inheritParams p
 #' @param word2vec_args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
 #' @param gmm_args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
+#' @export
 scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args = list()){
   wtv <- word_topic_vector(doc, k, dimension, word2vec_args, gmm_args)
   dv <- document_vector(doc, word, wtv)
   purrr::map(dv, ~ make_sparse(.x, p))
 }
+
+#' @name doc
+#' @title doc
+#' @keywords internal
+#' @param doc List of document. each document
+NULL
+
+#' @name k
+#' @title k
+#' @keywords internal
+#' @param k The number of clusters
+NULL
+
+#' @name dimension
+#' @title dimension
+#' @keywords internal
+#' @param dimension The dimensions of word vector representations for every word
+NULL
+
+#' @name p
+#' @title p
+#' @keywords internal
+#' @param p The sparsity threshold for SCDV
+NULL
