@@ -74,24 +74,36 @@ scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args =
   purrr::map(dv, ~ make_sparse(.x, p))
 }
 
+#' List of document. each document
+#'
+#' List of document. each document
 #' @name doc
 #' @title doc
 #' @keywords internal
 #' @param doc List of document. each document
 NULL
 
+#' The number of clusters
+#'
+#' The number of clusters
 #' @name k
 #' @title k
 #' @keywords internal
 #' @param k The number of clusters
 NULL
 
+#' The dimensions of word vector representations for every word
+#'
+#' The dimensions of word vector representations for every word
 #' @name dimension
 #' @title dimension
 #' @keywords internal
 #' @param dimension The dimensions of word vector representations for every word
 NULL
 
+#' The sparsity threshold for SCDV
+#'
+#' The sparsity threshold for SCDV
 #' @name p
 #' @title p
 #' @keywords internal

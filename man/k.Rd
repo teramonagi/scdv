@@ -6,4 +6,10 @@
 \arguments{
 \item{k}{The number of clusters}
 }
+\description{
+The number of clusters
+}
+\details{
+The number of clusters
+}
 \keyword{internal}

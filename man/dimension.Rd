@@ -6,4 +6,10 @@
 \arguments{
 \item{dimension}{The dimensions of word vector representations for every word}
 }
+\description{
+The dimensions of word vector representations for every word
+}
+\details{
+The dimensions of word vector representations for every word
+}
 \keyword{internal}

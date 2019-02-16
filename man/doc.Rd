@@ -6,4 +6,10 @@
 \arguments{
 \item{doc}{List of document. each document}
 }
+\description{
+List of document. each document
+}
+\details{
+List of document. each document
+}
 \keyword{internal}

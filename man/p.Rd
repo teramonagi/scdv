@@ -6,4 +6,10 @@
 \arguments{
 \item{p}{The sparsity threshold for SCDV}
 }
+\description{
+The sparsity threshold for SCDV
+}
+\details{
+The sparsity threshold for SCDV
+}
 \keyword{internal}
