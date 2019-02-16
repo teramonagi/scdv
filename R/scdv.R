@@ -51,11 +51,11 @@ make_sparse <- function(dv, p)
   ifelse(abs(dv) > p * t, dv, 0)
 }
 
-document_vector <- function(doc, word, wtv)
+document_vector <- function(doc, wtv)
 {
+  word <- rownames(wtv)
   purrr::map(doc, ~ colSums(wtv[.x[.x %in% word], ]))
 }
-
 
 #' Calculate Sparse Composite Document Vector (SCDV)
 #'
@@ -70,7 +70,7 @@ document_vector <- function(doc, word, wtv)
 #' @export
 scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args = list()){
   wtv <- word_topic_vector(doc, k, dimension, word2vec_args, gmm_args)
-  dv <- document_vector(doc, word, wtv)
+  dv <- document_vector(doc, wtv)
   purrr::map(dv, ~ make_sparse(.x, p))
 }
 
