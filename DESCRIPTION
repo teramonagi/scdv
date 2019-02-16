@@ -1,0 +1,23 @@
+Package: scdv
+Type: Package
+Title: SCDV : Sparse Composite Document Vectors using soft clustering over distributional representations
+Version: 0.1.0
+Authors@R: c(
+    person("Nagi", "Teramo", , "teramonagi@gmail.com", role = c("aut", "cre")),
+    person("Shinichi", "Takayanagi", , "shinichi.takayanagi@gmail.com", role = c("aut"))
+  )
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+URL: http://github.com/teramonagi/scdv
+BugReports: https://github.com/teramonagi/scdv/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    stringr,
+    purrr,
+    wordVectors,
+    ClusterR
+Suggests:
+    testthat
+RoxygenNote: 6.0.1
