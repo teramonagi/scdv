@@ -19,5 +19,8 @@ Imports:
     wordVectors,
     ClusterR
 Suggests:
-    testthat
+    testthat,
+    httr,
+    tokenizers,
+    stopwords
 RoxygenNote: 6.0.1

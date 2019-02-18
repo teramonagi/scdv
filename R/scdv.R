@@ -1,25 +1,3 @@
-get_default <- function(func){
-  x <- as.list(formals(func))
-  purrr::keep(x, purrr::map_lgl(x, ~ !is.name(.x)))
-}
-
-overwrite_default <- function(func, args){
-  default_args <- get_default(func)
-  result <- purrr::map(names(default_args), ~ if(is.element(.x, args)){args[[.x]]}else{default_args[[.x]]})
-  stats::setNames(result, names(default_args))
-}
-
-word2vec <- function(doc, dimension, args = list())
-{
-  output_file <- tempfile(fileext = ".bin")
-  document_file <- tempfile()
-  # Save doc into temp file
-  writeLines(stringr::str_c(unlist(doc), collapse = " "), document_file)
-  # Train a model by word2vec
-  model <- wordVectors::train_word2vec(document_file, output_file = output_file, vectors = dimension, force = TRUE)
-  as.matrix(model@.Data)
-}
-
 gmm <- function(wv, k, args = list())
 {
   x <- ClusterR::center_scale(wv, mean_center = T, sd_scale = T)
@@ -35,6 +13,37 @@ calc_idf <- function(doc, word)
   1 + log(D / denominator)
 }
 
+
+#' Get embedding expression by word2vec
+#'
+#' Get embedding expression by word2vec
+#'
+#' @inheritParams doc
+#' @inheritParams dimension
+#' @inheritParams word2vec_args
+#' @export
+word2vec <- function(doc, dimension, args = list())
+{
+  output_file <- tempfile(fileext = ".bin")
+  document_file <- tempfile()
+  # Save doc into temp file
+  writeLines(stringr::str_c(unlist(doc), collapse = " "), document_file)
+  # Train a model by word2vec
+  model <- wordVectors::train_word2vec(document_file, output_file = output_file, vectors = dimension, force = TRUE)
+  as.matrix(model@.Data)
+}
+
+#' Calculate Word-Topic Vector
+#'
+#' Calculate Word-Topic Vector
+#'
+#' @inheritParams doc
+#' @inheritParams k
+#' @inheritParams dimension
+#' @inheritParams p
+#' @param word2vec_args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
+#' @param gmm_args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
+#' @export
 word_topic_vector <- function(doc, k, dimension, word2vec_args = list(), gmm_args = list())
 {
   wv <- word2vec(doc, dimension, word2vec_args)
@@ -45,12 +54,13 @@ word_topic_vector <- function(doc, k, dimension, word2vec_args = list(), gmm_arg
   idf * purrr::reduce(wcv, ~ cbind(.x, .y))
 }
 
-make_sparse <- function(dv, p)
-{
-  t <- mean(abs(range(dv)))
-  ifelse(abs(dv) > p * t, dv, 0)
-}
-
+#' Calculate Document Vector (SCDV)
+#'
+#' Calculate Document Vector (SCDV)
+#'
+#' @inheritParams doc
+#' @inheritParams wtv
+#' @export
 document_vector <- function(doc, wtv)
 {
   word <- rownames(wtv)
@@ -65,8 +75,8 @@ document_vector <- function(doc, wtv)
 #' @inheritParams k
 #' @inheritParams dimension
 #' @inheritParams p
-#' @param word2vec_args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
-#' @param gmm_args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
+#' @inheritParams word2vec_args
+#' @inheritParams gmm_args
 #' @export
 scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args = list()){
   wtv <- word_topic_vector(doc, k, dimension, word2vec_args, gmm_args)
@@ -74,9 +84,17 @@ scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args =
   purrr::map(dv, ~ make_sparse(.x, p))
 }
 
-#' List of document. each document
+#' @keywords internal
+make_sparse <- function(dv, p)
+{
+  t <- mean(abs(range(dv)))
+  ifelse(abs(dv) > p * t, dv, 0)
+}
+
+#' List of document. Each document consists of a vector of words (tokenized-word)
 #'
-#' List of document. each document
+#' List of document. Each document consists of a vector of words (tokenized-word)
+#'
 #' @name doc
 #' @title doc
 #' @keywords internal
@@ -86,6 +104,7 @@ NULL
 #' The number of clusters
 #'
 #' The number of clusters
+#'
 #' @name k
 #' @title k
 #' @keywords internal
@@ -95,6 +114,7 @@ NULL
 #' The dimensions of word vector representations for every word
 #'
 #' The dimensions of word vector representations for every word
+#'
 #' @name dimension
 #' @title dimension
 #' @keywords internal
@@ -104,8 +124,39 @@ NULL
 #' The sparsity threshold for SCDV
 #'
 #' The sparsity threshold for SCDV
+#'
 #' @name p
 #' @title p
 #' @keywords internal
 #' @param p The sparsity threshold for SCDV
+NULL
+
+#' Word-topic vectors
+#'
+#' Word-topic vectors
+#'
+#' @name wtv
+#' @title wtv
+#' @keywords internal
+#' @param wtv Word-topic vectors
+NULL
+
+#' Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
+#'
+#' Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
+#'
+#' @name word2vec_args
+#' @title word2vec_args
+#' @keywords internal
+#' @param word2vec_args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
+#' @param args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
+NULL
+
+#' Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
+#'
+#' @name gmm_args
+#' @title gmm_args
+#' @keywords internal
+#' @param gmm_args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
+#' @param args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
 NULL

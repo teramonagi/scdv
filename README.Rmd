@@ -1,8 +1,18 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# scdv
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
 
+# scdv
 An R package for SCDV (Sparse Composite Document Vectors) algorithm
 
 [![Travis-CI Build
@@ -20,7 +30,6 @@ devtools::install_github("teramonagi/scdv")
 ```
 
 ## Example
-
 ``` r
 library(scdv)
 # Get example document from Project Gutenberg (http://www.gutenberg.org/wiki/Main_Page)
