@@ -41,7 +41,7 @@ word_topic_vector <- function(doc, k, dimension, word2vec_args = list(), gmm_arg
   prob <- gmm(wv, k, gmm_args)
   wcv <- purrr::map(seq_len(ncol(prob)), ~ prob[,.x]*wv)
   word <- rownames(wv)
-  idf <- calc_idf(word, doc)
+  idf <- calc_idf(doc, word)
   idf * purrr::reduce(wcv, ~ cbind(.x, .y))
 }
 
