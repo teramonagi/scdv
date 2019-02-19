@@ -13,7 +13,6 @@ calc_idf <- function(doc, word)
   1 + log(D / denominator)
 }
 
-
 #' Get embedding expression by word2vec
 #'
 #' Get embedding expression by word2vec
@@ -82,6 +81,24 @@ scdv <- function(doc, k, dimension, p = 0.01, word2vec_args = list(), gmm_args =
   wtv <- word_topic_vector(doc, k, dimension, word2vec_args, gmm_args)
   dv <- document_vector(doc, wtv)
   purrr::map(dv, ~ make_sparse(.x, p))
+}
+
+#' Under construction...
+#'
+#' Under construction...
+#'
+#' @param x aaa
+#' @param method aaa
+#' @export
+visualize <- function(x, method="tsne"){
+  x_tsne <- Rtsne::Rtsne(x, perplexity = min(30, round((nrow(x)-1)/3)))
+  df <- data.frame(
+    x = x_tsne$Y[, 1],
+    y = x_tsne$Y[, 2],
+    label = rownames(x)
+  )
+  ggplot2::ggplot(df, ggplot2::aes(x = x, y = y, color = label)) +
+    ggplot2::geom_text(ggplot2::aes(label = label))
 }
 
 #' @keywords internal

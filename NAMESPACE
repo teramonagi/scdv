@@ -2,5 +2,6 @@
 
 export(document_vector)
 export(scdv)
+export(visualize)
 export(word2vec)
 export(word_topic_vector)

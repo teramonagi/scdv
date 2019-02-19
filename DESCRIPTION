@@ -16,8 +16,10 @@ LazyData: true
 Imports:
     stringr,
     purrr,
+    ggplot2,
     wordVectors,
-    ClusterR
+    ClusterR,
+    Rtsne
 Suggests:
     testthat,
     httr,

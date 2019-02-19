@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r setting, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -17,11 +17,11 @@ An R package for SCDV (Sparse Composite Document Vectors) algorithm
 
 [![Travis-CI Build
 Status](https://api.travis-ci.com/teramonagi/scdv.svg?branch=master)](https://travis-ci.com/teramonagi/scdv)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/gghighlight)](https://cran.r-project.org/package=scdv)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/scdv)](https://cran.r-project.org/package=scdv)
 
 ## Installation
 
-``` r
+```r
 # install.packages("gghighlight")
 
 # The development version from GitHub:
@@ -30,7 +30,9 @@ devtools::install_github("teramonagi/scdv")
 ```
 
 ## Example
-``` r
+
+### Get (sample) data and do pre-processing
+```{r data, cache=TRUE}
 library(scdv)
 # Get example document from Project Gutenberg (http://www.gutenberg.org/wiki/Main_Page)
 urls <- c(
@@ -39,9 +41,22 @@ urls <- c(
 )
 x <- purrr::map(urls, ~ httr::content(httr::GET(.x)))
 doc <- purrr::map(x, ~ tokenizers::tokenize_words(.x, stopwords = stopwords::stopwords("en"))[[1]])
+```
+
+### Calculate SCDV(Sparse Composite Document Vector)
+```{r scdv, cache=FALSE}
 # Set the number of cluster (k), and the word2vec dimension (dimension)
 k <- 10
 dimension <- 100
 # Calculate Sparse Composite Document Vector
 dv <- scdv::scdv(doc, k, dimension)
+```
+
+### Calculate embedding expression by word2vec and visualize these
+```{r w2v, cache=FALSE}
+# Calculate embedding expression by word2vec
+wv <- scdv::word2vec(doc, dimension)
+scdv::visualize(wv[sample(nrow(wv), size = 10), ])
+# You can also visualize document vecotr like
+# scdv::visualize(dv)
 ```
