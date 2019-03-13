@@ -1,3 +1,18 @@
+calc_idf <- function(doc, word)
+{
+  D <- length(doc)
+  denominator <- colSums(matrix(unlist(purrr::map(doc, ~ word %in% .x)), nrow = D, byrow = TRUE))
+  1 + log(D / denominator)
+}
+
+#' Gaussian Mixture Model clustering
+#'
+#' Gaussian Mixture Model clustering
+#'
+#' @inheritParams wv
+#' @inheritParams k
+#' @inheritParams gmm_args
+#' @export
 gmm <- function(wv, k, args = list())
 {
   x <- ClusterR::center_scale(wv, mean_center = T, sd_scale = T)
@@ -6,16 +21,9 @@ gmm <- function(wv, k, args = list())
   ClusterR::predict_GMM(x, gmm$centroids, gmm$covariance_matrices, gmm$weights)$cluster_proba
 }
 
-calc_idf <- function(doc, word)
-{
-  D <- length(doc)
-  denominator <- colSums(matrix(unlist(purrr::map(doc, ~ word %in% .x)), nrow = D, byrow = TRUE))
-  1 + log(D / denominator)
-}
-
-#' Get embedding expression by word2vec
+#' Get word embedding expression by word2vec
 #'
-#' Get embedding expression by word2vec
+#' Get word embedding expression by word2vec
 #'
 #' @inheritParams doc
 #' @inheritParams dimension
@@ -156,6 +164,16 @@ NULL
 #' @title wtv
 #' @keywords internal
 #' @param wtv Word-topic vectors
+NULL
+
+#' Word vectors
+#'
+#' Word vectors
+#'
+#' @name wv
+#' @title wv
+#' @keywords internal
+#' @param wv Word vectors(word embedding expression)
 NULL
 
 #' Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )

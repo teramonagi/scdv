@@ -2,7 +2,7 @@
 % Please edit documentation in R/scdv.R
 \name{word2vec}
 \alias{word2vec}
-\title{Get embedding expression by word2vec}
+\title{Get word embedding expression by word2vec}
 \usage{
 word2vec(doc, dimension, args = list())
 }
@@ -14,5 +14,5 @@ word2vec(doc, dimension, args = list())
 \item{args}{Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )}
 }
 \description{
-Get embedding expression by word2vec
+Get word embedding expression by word2vec
 }

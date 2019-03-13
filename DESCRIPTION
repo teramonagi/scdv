@@ -6,8 +6,11 @@ Authors@R: c(
     person("Nagi", "Teramo", , "teramonagi@gmail.com", role = c("aut", "cre")),
     person("Shinichi", "Takayanagi", , "shinichi.takayanagi@gmail.com", role = c("aut"))
   )
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Sparse Composite Document Vector (SCDV) is a feature vector formation technique for documents
+    to get distributional paragraph vector representations.
+    In SCDV, word embedding's are clustered to capture multiple contexts in which words occur. 
+    They are then chained together to form document topic-vectors that can express complex, multi-topic documents.
+    The approach is described in more detail in the article by Dheeraj et al. (2016) <arXiv:1612.06778>.
 URL: http://github.com/teramonagi/scdv
 BugReports: https://github.com/teramonagi/scdv/issues
 License: MIT + file LICENSE
@@ -26,3 +29,5 @@ Suggests:
     tokenizers,
     stopwords
 RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
