@@ -1,25 +1,26 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# scdv
+scdv
+====
 
 An R package for SCDV (Sparse Composite Document Vectors) algorithm
 
-[![Travis-CI Build
-Status](https://api.travis-ci.com/teramonagi/scdv.svg?branch=master)](https://travis-ci.com/teramonagi/scdv)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/scdv)](https://cran.r-project.org/package=scdv)
+[![Travis-CI Build Status](https://api.travis-ci.com/teramonagi/scdv.svg?branch=master)](https://travis-ci.com/teramonagi/scdv) <!-- [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/scdv)](https://cran.r-project.org/package=scdv) -->
 
-## Installation
+Installation
+------------
 
 ``` r
-# install.packages("gghighlight")
+# Wait for a while...
+# install.packages("scdv")
 
 # The development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("teramonagi/scdv")
 ```
 
-## Example
+Example
+-------
 
 ### Get (sample) data and do pre-processing
 
@@ -31,7 +32,11 @@ urls <- c(
   "http://www.gutenberg.org/files/1342/1342-0.txt"
 )
 x <- purrr::map(urls, ~ httr::content(httr::GET(.x)))
+# pre-processing for each document
 doc <- purrr::map(x, ~ tokenizers::tokenize_words(.x, stopwords = stopwords::stopwords("en"))[[1]])
+doc[[1]][1:10]
+#>  [1] "project"   "gutenberg" "ebook"     "tale"      "two"      
+#>  [6] "cities"    "charles"   "dickens"   "ebook"     "use"
 ```
 
 ### Calculate SCDV(Sparse Composite Document Vector)
@@ -42,12 +47,10 @@ k <- 10
 dimension <- 100
 # Calculate Sparse Composite Document Vector
 dv <- scdv::scdv(doc, k, dimension)
-#> Starting training using file /private/var/folders/pw/st6p3hlj2d983lfsq6jx4np00000gp/T/RtmppkJpJ8/filead753b63fc55
+#> Starting training using file C:/Users/stakaya/AppData/Local/Temp/RtmpGATx04/file19e83e63a85
 #> 100K
 Vocab size: 3896
 #> Words in train file: 107904
-#> Filename ends with .bin, so reading in binary format
-#> Reading a word2vec binary file of 3896 rows and 100 columns
 #> 
   |                                                                       
   |                                                                 |   0%
@@ -388,12 +391,10 @@ Vocab size: 3896
 ``` r
 # Calculate embedding expression by word2vec
 wv <- scdv::word2vec(doc, dimension)
-#> Starting training using file /private/var/folders/pw/st6p3hlj2d983lfsq6jx4np00000gp/T/RtmppkJpJ8/filead7572ed3672
-#> 200K
+#> Starting training using file C:/Users/stakaya/AppData/Local/Temp/RtmpK4mY2O/file2f3456f3759a
+#> 100K
 Vocab size: 3896
 #> Words in train file: 107904
-#> Filename ends with .bin, so reading in binary format
-#> Reading a word2vec binary file of 3896 rows and 100 columns
 #> 
   |                                                                       
   |                                                                 |   0%
@@ -727,12 +728,14 @@ Vocab size: 3896
   |=================================================================|  99%
   |                                                                       
   |=================================================================| 100%
+# Sample row and visualize
 scdv::visualize(wv[sample(nrow(wv), size = 10), ])
 ```
 
-![](man/figures/README-w2v-1.png)<!-- -->
+![](man/figures/README-w2v-1.png)
 
 ``` r
+
 # You can also visualize document vecotr like
-# scdv::visualize(dv)
+#scdv::visualize(dv)
 ```
