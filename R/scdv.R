@@ -31,12 +31,16 @@ gmm <- function(wv, k, args = list())
 #' @export
 word2vec <- function(doc, dimension, args = list())
 {
+  args <- overwrite_default(wordVectors::train_word2vec, args)
   output_file <- tempfile(fileext = ".bin")
   document_file <- tempfile()
   # Save doc into temp file
   writeLines(stringr::str_c(unlist(doc), collapse = " "), document_file)
   # Train a model by word2vec
-  model <- wordVectors::train_word2vec(document_file, output_file = output_file, vectors = dimension, force = TRUE)
+  model <- wordVectors::train_word2vec(
+    document_file, output_file = output_file, vectors = dimension, force = TRUE,
+    show_by = args[["show_by"]]
+  )
   as.matrix(model@.Data)
 }
 
@@ -51,7 +55,7 @@ word2vec <- function(doc, dimension, args = list())
 #' @param word2vec_args Parameters for wrod2vec model ( parameters of wordVectors::train_word2vec )
 #' @param gmm_args Parameters for GMM model ( parameters of ClusterR::center_scale and ClusterR::GMM )
 #' @export
-word_topic_vector <- function(doc, k, dimension, word2vec_args = list(), gmm_args = list())
+word_topic_vector <- function(doc, k, dimension, word2vec_args = list(show_by=25), gmm_args = list())
 {
   wv <- word2vec(doc, dimension, word2vec_args)
   prob <- gmm(wv, k, gmm_args)

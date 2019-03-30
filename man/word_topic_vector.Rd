@@ -4,7 +4,7 @@
 \alias{word_topic_vector}
 \title{Calculate Word-Topic Vector}
 \usage{
-word_topic_vector(doc, k, dimension, word2vec_args = list(),
+word_topic_vector(doc, k, dimension, word2vec_args = list(show_by = 25),
   gmm_args = list())
 }
 \arguments{

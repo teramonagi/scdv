@@ -5,6 +5,7 @@ get_default <- function(func){
 
 overwrite_default <- function(func, args){
   default_args <- get_default(func)
-  result <- purrr::map(names(default_args), ~ if(is.element(.x, args)){args[[.x]]}else{default_args[[.x]]})
+  args_name <- names(args)
+  result <- purrr::map(names(default_args), ~ if(.x %in% args_name){args[[.x]]}else{default_args[[.x]]})
   stats::setNames(result, names(default_args))
 }
