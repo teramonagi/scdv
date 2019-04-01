@@ -7,9 +7,9 @@
 \item{doc}{List of document. each document}
 }
 \description{
-List of document. each document
+List of document. Each document consists of a vector of words (tokenized-word)
 }
 \details{
-List of document. each document
+List of document. Each document consists of a vector of words (tokenized-word)
 }
 \keyword{internal}
