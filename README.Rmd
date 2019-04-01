@@ -52,18 +52,20 @@ doc[[1]][1:10]
 ```{r scdv, cache=TRUE}
 # Set the number of cluster (k), and the word2vec dimension (dimension)
 k <- 10
-dimension <- 100
+dimension <- 30
 # Calculate Sparse Composite Document Vector
-dv <- scdv::scdv(doc, k, dimension)
+dv <- scdv::scdv(doc, k, dimension, word2vec_args = list(show_by=25))
 ```
 
 ### Calculate embedding expression by word2vec and visualize these
-```{r w2v, cache=TRUE}
+```{r w2v, cache=FALSE}
 # Calculate embedding expression by word2vec
-wv <- scdv::word2vec(doc, dimension)
+wv <- scdv::word2vec(doc, dimension, args = list(show_by=25))
+```
+
+```{r w2v_visualize}
 # Sample row and visualize
 scdv::visualize(wv[sample(nrow(wv), size = 10), ])
-
 # You can also visualize document vecotr like
 #scdv::visualize(dv)
 ```
